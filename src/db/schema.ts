@@ -51,6 +51,7 @@ export const recipesTable = pgTable("recipes", {
     title: text().notNull(),
     description: text(),
     instructions: text().notNull(),
+    imageUrl: text("image_url"),
     servings: real(),
     sourceType: recipeSourceTypeEnum().notNull(),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
