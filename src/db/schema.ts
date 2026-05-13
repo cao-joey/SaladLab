@@ -55,6 +55,9 @@ export const recipesTable = pgTable("recipes", {
     servings: real(),
     sourceType: recipeSourceTypeEnum().notNull(),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    prep_time: integer().notNull(),
+    cook_time: integer().notNull(),
+    total_time: integer().notNull(),
 });
 
 export const recipeIngredientsTable = pgTable("recipe_ingredients", {
