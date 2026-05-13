@@ -1,0 +1,1 @@
+ALTER TYPE "public"."ingredients_category" ADD VALUE 'acid';

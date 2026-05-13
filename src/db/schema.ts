@@ -12,7 +12,7 @@ import {
 
 export const ingredientCategoryEnum = pgEnum("ingredients_category", [
     "base", "vegetable", "protein", "cheese", "crunch", 
-    "fruit", "grain", "dressing", "seasoning", "legume",
+    "fruit", "grain", "dressing", "seasoning", "legume", "acid"
 ]);
 
 export const recipeSourceTypeEnum = pgEnum("recipe_source_type", [
