@@ -7,7 +7,8 @@ import {
     timestamp,
     boolean,
     real,
-    text
+    text,
+    uniqueIndex
 } from "drizzle-orm/pg-core";
 
 export const ingredientCategoryEnum = pgEnum("ingredients_category", [
@@ -21,17 +22,29 @@ export const recipeSourceTypeEnum = pgEnum("recipe_source_type", [
 
 export const ingredientsTable = pgTable("ingredients", { 
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
-    name: varchar().notNull().unique(),
+    name: varchar("name").notNull(),
     category: ingredientCategoryEnum().notNull(),
-});
+}, table => ({
+        nameUnique: uniqueIndex("ingredients_name_unique").on(table.name),
+}));
+
 
 export const ingredientAliasesTable = pgTable("ingredient_aliases", {
-    ingredientId: integer("ingredient_id").notNull().references(() => 
-        ingredientsTable.id, {onDelete: 'cascade'}
-    ),
-    alias: varchar().notNull(),
-    normalizedAlias: varchar("normalized_alias").notNull().unique().primaryKey(),
-});
+    ingredientId: integer("ingredient_id")
+    .notNull()
+    .references(() => ingredientsTable.id, { onDelete: "cascade" }),
+
+    alias: varchar("alias").notNull(),
+
+    normalizedAlias: varchar("normalized_alias")
+    .notNull()
+    .primaryKey(),
+}, table => ({
+    normalizedAliasUnique: uniqueIndex(
+    "ingredient_aliases_normalized_alias_unique"
+    ).on(table.normalizedAlias),
+}));
+
 
 export const ingredientDetailsTable = pgTable("ingredient_details", {
     ingredientId: integer("ingredient_id").primaryKey().references(() => 
@@ -66,7 +79,7 @@ export const recipeIngredientsTable = pgTable("recipe_ingredients", {
     ),
     ingredientId: integer("ingredient_id").notNull().references(() => ingredientsTable.id),
     quantity: real(),
-    unit: varchar(),
+    unit: varchar("unit"),
     isOptional: boolean("is_optional").notNull().default(false),
     weight: real().notNull().default(1),
 }, table => [

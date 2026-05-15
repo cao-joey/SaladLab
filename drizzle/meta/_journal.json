@@ -29,6 +29,13 @@
       "when": 1778691812647,
       "tag": "0003_stale_iron_lad",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1778701125603,
+      "tag": "0004_fast_banshee",
+      "breakpoints": true
     }
   ]
 }
