@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Smart Salad Builder Web App
+Full-stack web app that helps users create salads or discover recipes based on the ingredients they have.
 
-## Getting Started
+## Setup
+Before cloning the repository, please make sure you have the following: 
+1. Node.js
+2. npm
+3. Docker
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Once you have installed everything, you'll want to setup your own docker container. To do this:
 ```
+docker run --name my-postgres \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=password \
+  -e POSTGRES_DB=mydb \
+  -p 5432:5432 \
+  -d postgres:16
+```
+Once you have your container running, create your own `.env` file and copy the line from the `.env.example`, 
+replacing the link with your own database information.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Now, install dependencies with `npm install` 
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+We now want to import all data into the database: --> (all data not uploaded yet, please hold)
+1. Find the `data` folder (You will find a `ingredients_data` JSON file as well as a `seedingredients.ts` script)
+2. Run the `.ts` script: `npx tsx seedingredients.ts`
+3. (eventually, recipes as well)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Once that's all done, you can run `npm start` to begin the application.
 
-## Learn More
+## Modes:
 
-To learn more about Next.js, take a look at the following resources:
+### 1. Regular
+- Users start by entering ingredients into an interactive input field with autocomplete suggestions
+- Input supports normalization (e.g., “garbanzo beans” -> “chickpeas”)
+- As ingredients are added:
+  - System recommends additional complementary ingredients
+  - System matches and ranks existing salad recipes from the database
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. Pantry
+- Users input all ingredients they currently have
+- System returns recipe suggestions ranked by match quality
+- Each recipe shows:
+  - Ingredients the user already has
+  - Missing ingredients
+  - Optional ingredients
+  - Match percentage or completeness score
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 3. Browse mode 
+- Users can just freely look up recipes :) 
+- Randomized display of recipes from the database
+- OR: Users can browse based on tags, protein types, etc!
